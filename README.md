@@ -3,13 +3,13 @@
 
 ##### lrucache:
   
-  *description:* **`lrucache(limit = 1024)`** *it creates a empty lru cache with a specified limit*
+  *description:* **`LruCache(limit = 1024)`** *it creates a empty lru cache with a specified limit*
   
   *space-complexity:* **`O(n)`** *where **n** is the no of elements in the cache*
   
   ```python
   import lrucache
-  ob = lrucache.lrucache(limit = 2056)
+  ob = lrucache.LruCache(limit = 2056)
   # Now u cud insert 2056 things into the cache 
   ```
   
