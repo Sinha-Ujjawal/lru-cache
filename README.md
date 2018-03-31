@@ -100,26 +100,26 @@
   # 2
   ```
 
-##### getLimit:
+##### limit:
 
-  *description:* **`getLimit()`** *it returns the max no of elements that could be in the cache*
+  *description:* **`limit`** *it returns the max no of elements that could be in the cache*
   
   *time-complexity:* **`O(1)`**
   
   ```python
-  print(ob.getLimit())
+  print(ob.limit)
   # will print
   # 2056
   ```
 
-##### getFaults:
+##### faults:
 
-  *description:* **`getFaults()`** *it returns the no of faults occurred until last put*
+  *description:* **`faults()`** *it returns the no of faults occurred until last put*
   
   *time-complexity:* **`O(1)`**
   
   ```python
-  print(ob.getFaults())
+  print(ob.faults())
   # will print
   # 2
   ```
