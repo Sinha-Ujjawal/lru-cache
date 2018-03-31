@@ -1,6 +1,6 @@
 import Q
 
-class lrucache:
+class LruCache:
 	def __init__(self, limit = 1024):
 		'''creates a lru cache with a specified limit
 		'''
@@ -15,6 +15,18 @@ class lrucache:
 			A.append(i)
 		return 'lrucache({})'.format(A)
 		
+	def __setitem__(self, k, v):
+		self.put(k, v)
+		
+	def __getitem__(self, k):
+		return self.get(k)
+		
+	def __contains__(self, k):
+		return self.member(k)
+	
+	def __len__(self):
+		return self.getKeyCount()
+		
 	def __iter__(self):
 		return self.getAll()
 		
@@ -23,12 +35,14 @@ class lrucache:
 		'''
 		return self._Q.getKeyCount()
 		
-	def getFaults(self):
+	@property
+	def faults(self):
 		'''returns no of faults occurred till now
 		'''
 		return self._faults
 		
-	def getLimit(self):
+	@property
+	def limit(self):
 		'''returns limit of the cache
 		'''
 		return self._limit
@@ -59,12 +73,12 @@ class lrucache:
 	def isFull(self):
 		'''check is cache is full or not
 		'''
-		return self.getKeyCount() == self.getLimit()
+		return len(self) == self.limit
 		
 	def isHalfFull(self):
 		'''check is cache is half full or not
 		'''
-		return self.getKeyCount() == (self.getLimit() >> 1)
+		return len(self) == (self.limit >> 1)
 		
 	def __get(self, dictob, k):
 		try:
@@ -83,6 +97,7 @@ class lrucache:
 		'''
 		t = self.__get(self._hash_map, k)
 		if t:
+			self._Q._Q__moveNodeToTail(t)
 			t.v = v
 			return t, 1
 		else:
@@ -96,13 +111,14 @@ class lrucache:
 			return t, 0
 			
 	def pop(self, k):
-		'''pops out k, v from the cache, if no such k returns None
+		'''pops out k, v from the cache, if no such k then raises KeyError
 		'''
-		if not self.isEmpty():
-			t = self.__pop(self._hash_map, k)
-			if t:
-				self._Q._Q__deleteNode(t)
-				return t.k, t.v
+		t = self.__pop(self._hash_map, k)
+		if t:
+			self._Q._Q__deleteNode(t)
+			return t.k, t.v
+		else:
+			raise KeyError('No such key: {}'.format(k))
 			
 	def delAll(self):
 		'''delete every element in the cache (empties the cache)
@@ -112,12 +128,23 @@ class lrucache:
 				self.pop(i[0])
 	
 	def get(self, k):
-		'''returns k, v from the cache, if no such k returns None
+		'''returns k, v from the cache, if no such k then raises KeyError
 		'''
 		t = self.__get(self._hash_map, k)
 		if t:
 			self._Q._Q__moveNodeToTail(t)
 			return t.k, t.v
+		else:
+			raise KeyError('No such key: {}'.format(k))
+			
+	def member(self, k):
+		'''returns True it k is present in the cache, else returns False
+		'''
+		try:
+			self.get(k)
+			return True
+		except KeyError:
+			return False
 			
 	def getAll(self):
 		'''returns generator that generate all k, v pair present in the cache
