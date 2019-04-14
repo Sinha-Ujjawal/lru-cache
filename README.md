@@ -52,7 +52,7 @@
 
   *description:* **`clear()`** *it clears/empties the cache*
   
-  *time-complexity:* **`O(n)`** *where **n** is the no of elements in the cache*
+  *time-complexity:* **`O(1)`**
   
   ```python
   ob.clear()
